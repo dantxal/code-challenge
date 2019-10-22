@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { formatDistance } from 'date-fns';
 import en from 'date-fns/locale/en-US';
 import { toast } from 'react-toastify';
@@ -17,6 +17,7 @@ export default function Chat() {
   const [currentName, setCurrentName] = useState('Dan');
   const [currentMessage, setCurrentMessage] = useState('');
   const [messages, setMessages] = useState([]);
+  const messagesList = useRef();
 
   useEffect(() => {
     async function loadMessages() {
@@ -30,12 +31,16 @@ export default function Chat() {
         loadMessages();
       }, 500);
     } catch (err) {
-      console.log(err.message);
       toast.error(err.message, {
         autoClose: 200,
       });
     }
   }, []);
+
+  // Auto scrolls window
+  useEffect(() => {
+    messagesList.current.scrollTop = messagesList.current.scrollHeight;
+  }, [messages]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -55,7 +60,7 @@ export default function Chat() {
         <header>
           <h2>Chat window name</h2>
         </header>
-        <MessagesList>
+        <MessagesList ref={messagesList}>
           {messages.map(message => (
             <MessageItem
               key={message.id}
