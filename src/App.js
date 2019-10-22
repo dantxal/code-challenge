@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App">
       <Chat />
-      <ToastContainer />
+      <ToastContainer autoClose={3000} />
       <GlobalStyle />
     </div>
   );

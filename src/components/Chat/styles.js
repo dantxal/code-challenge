@@ -19,8 +19,11 @@ export const Container = styled.div`
 export const ChatWindow = styled.div`
   width: 600px;
   height: 80vh;
+  margin-top: 30px;
+
   header {
     margin-bottom: 20px;
+    text-align: center;
   }
 `;
 export const MessagesList = styled.ul`
@@ -28,8 +31,8 @@ export const MessagesList = styled.ul`
   flex-direction: column;
   background: #dfdfdf;
   padding: 20px;
+  max-height: 55vh;
   overflow: auto;
-  max-height: 60vh;
 `;
 
 export const MessageItem = styled.li`
@@ -61,7 +64,7 @@ export const Form = styled.form`
   flex-direction: column;
   align-items: center;
   background: #bbb;
-  padding: 20px;
+  padding: 20px 20px;
   input {
     align-self: flex-start;
     width: 30%;

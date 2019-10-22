@@ -16,37 +16,37 @@ import {
 export default function Chat() {
   const [currentName, setCurrentName] = useState('Dan');
   const [currentMessage, setCurrentMessage] = useState('');
-  const [messages, setMessages] = useState([
-    {
-      name: 'Tim',
-      text: 'this is a test message',
-      id: '2d418fa1-6b4e-46f0-a12b-99810dde6ce9',
-      dateAdded: 1537539445183,
-      dateEdited: 1537539445183,
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     async function loadMessages() {
-      try {
-        const response = await api.get('/comments');
+      const response = await api.get('/comments');
 
-        setMessages(response.data);
-      } catch (err) {
-        toast(err.data.error);
-      }
+      setMessages(response.data);
     }
-    loadMessages();
-    setInterval(() => {
+    try {
       loadMessages();
-    }, 100);
+      setInterval(() => {
+        loadMessages();
+      }, 500);
+    } catch (err) {
+      console.log(err.message);
+      toast.error(err.message, {
+        autoClose: 200,
+      });
+    }
   }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const comment = { name: currentName, text: currentMessage };
-    api.post('/comments', comment);
-    setCurrentMessage('');
+    try {
+      const comment = { name: currentName, text: currentMessage };
+      api.post('/comments', comment);
+      setCurrentMessage('');
+      toast.success('Message sent');
+    } catch (err) {
+      toast.error(err.message);
+    }
   }
 
   return (
